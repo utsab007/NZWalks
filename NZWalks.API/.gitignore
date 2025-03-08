@@ -1,0 +1,66 @@
+# ASP.NET Core specific files
+bin/
+obj/
+wwwroot/node_modules/
+wwwroot/lib/
+wwwroot/css/
+wwwroot/js/
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build output
+*.exe
+*.dll
+*.pdb
+*.nuget
+
+# Logs and debugging
+*.log
+logs/
+debug/
+test-results/
+coverage/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.dotCover
+*.coverage
+*.ncrunch*
+*.tfstate
+
+# NuGet dependencies
+packages/
+project.lock.json
+project.assets.json
+
+# Node.js dependencies (if using npm)
+node_modules/
+npm-debug.log
+yarn.lock
+
+# Entity Framework migration files (optional)
+migrations/
+
+# Configuration and secrets (DO NOT COMMIT)
+appsettings.Development.json
+appsettings.Local.json
+appsettings.Test.json
+secrets.json
+
+# Rider / JetBrains files
+.idea/
+
+# Docker files (if using Docker)
+docker-compose.override.yml
+*.dockerignore
+
+# Other system files
+Thumbs.db
+.DS_Store
