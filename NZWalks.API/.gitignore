@@ -45,8 +45,7 @@ node_modules/
 npm-debug.log
 yarn.lock
 
-# Entity Framework migration files (optional)
-migrations/
+
 
 # Configuration and secrets (DO NOT COMMIT)
 appsettings.Development.json
