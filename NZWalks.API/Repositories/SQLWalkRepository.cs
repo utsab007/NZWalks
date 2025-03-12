@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using NZWalks.API.Data;
 using NZWalks.API.Models.Domain;
 
@@ -28,9 +29,44 @@ namespace NZWalks.API.Repositories
             return walkToDelete;
         }
 
-        public async Task<List<Walk>> GetAllWalksAsync()
+        public async Task<List<Walk>> GetAllWalksAsync(string? filterOn = null,string? filterQuery = null, 
+            string? sortBy = null, bool isAscending = true, int pageNumber = 1, int pageSize = 1000)
         {
-            return await _dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
+            var walks = _dbContext.Walks.Include("Difficulty").Include("Region").AsQueryable();
+
+            // filtering
+            if(!string.IsNullOrWhiteSpace(filterOn) && !string.IsNullOrWhiteSpace(filterQuery))
+            {
+                if (filterOn.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = walks.Where(x => x.Name.Contains(filterQuery));
+                }
+            }
+
+            // sorting
+            if (!string.IsNullOrWhiteSpace(sortBy))
+            {
+                if (sortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
+                {
+                    walks = isAscending ? walks.OrderBy(x => x.Name) : walks.OrderByDescending(x=>x.Name);
+                    
+                }
+
+            else if (sortBy.Equals("Length", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (sortBy.Equals("Length", StringComparison.OrdinalIgnoreCase))
+                    {
+                        walks = isAscending ? walks.OrderBy(x => x.LengthInKm) : walks.OrderByDescending(x => x.LengthInKm);
+                    }
+                }
+            }
+
+            // pagination
+            var skipResults = (pageNumber - 1) * pageSize;
+            walks = walks.Skip(skipResults).Take(pageSize);
+
+            return await walks.ToListAsync();
+            //return await _dbContext.Walks.Include("Difficulty").Include("Region").ToListAsync();
         }
 
         public async Task<Walk?> GetWalkByIdAsync(Guid id)
