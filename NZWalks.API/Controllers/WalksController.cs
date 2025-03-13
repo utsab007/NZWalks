@@ -41,6 +41,9 @@ namespace NZWalks.API.Controllers
             [FromQuery] string? sortBy,[FromQuery] bool? isAscending,[FromQuery] int pageNumber = 1, [FromQuery] int pageSize=1000)
         {
             var walks = await _walkRepository.GetAllWalksAsync(filterOn,filterQuery,sortBy, isAscending ?? true,pageNumber,pageSize);
+
+            throw new Exception("Something went wrong");
+
             // Map domain model to DTO
             var walksDto = _mapper.Map<List<WalkDto>>(walks);
             return Ok(walksDto);

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +13,7 @@ namespace NZWalks.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class RegionsController : ControllerBase
     {
         private readonly NZWalksDbContext _dbContext;
@@ -28,6 +30,7 @@ namespace NZWalks.API.Controllers
 
         // GET all regions
         [HttpGet]
+        [Authorize(Roles ="Reader")]
         public async Task<IActionResult> GetAll()
         {
             // Get data from database - Regions domain table
@@ -55,6 +58,7 @@ namespace NZWalks.API.Controllers
         // GET region by id
         [HttpGet]
         [Route("{id:guid}")]
+        [Authorize(Roles = "Reader")]
         public async Task<IActionResult> GetRegionById([FromRoute]Guid id)
         {
             var region = await _regionRepository.GetRegionByIdAsync(id);
@@ -79,6 +83,7 @@ namespace NZWalks.API.Controllers
         // POST to create new region
         [HttpPost]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> CreateRegion([FromBody]AddRegionReqDto region)
         {
             //if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -111,6 +116,7 @@ namespace NZWalks.API.Controllers
         [HttpPut]
         [Route("{id:guid}")]
         [ValidateModel]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> UpdateRegion([FromRoute]Guid id, [FromBody]UpdateRegionReqDto updateRegionReqDto)
         {
             //if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -146,6 +152,7 @@ namespace NZWalks.API.Controllers
         // DELETE region by id
         [HttpDelete]
         [Route("{id:guid}")]
+        [Authorize(Roles = "Writer")]
         public async Task<IActionResult> DeleteRegion([FromRoute] Guid id)
         {
            var region = await _regionRepository.DeleteRegionAsync(id);
