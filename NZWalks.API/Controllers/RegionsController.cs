@@ -28,6 +28,13 @@ namespace NZWalks.API.Controllers
             _mapper = mapper;
         }
 
+        [HttpGet]
+        [Route("/test")]
+        public IActionResult Test()
+        {
+            return Ok("Regions Controller Test for absolute path");
+        }
+
         // GET all regions
         [HttpGet]
         [Authorize(Roles ="Reader")]
